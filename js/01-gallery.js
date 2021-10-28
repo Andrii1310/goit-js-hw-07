@@ -14,7 +14,7 @@ const createItem = galleryItems
           alt="${el.description}"
       />
       </a>
-    </div>`,
+    </div>`
   )
   .join('');
 
@@ -23,20 +23,25 @@ galleryContainer.insertAdjacentHTML('beforeend', createItem);
 // On and close modal window
 galleryContainer.addEventListener('click', onSelectImage);
 
-function onSelectImage (event){
-  event.preventDefault();
+function onSelectImage (e){
+  e.preventDefault();
 
-  if (event.target.nodeName !== 'IMG'){
+  if (e.target.nodeName !== 'IMG'){
       return;
   }
-  const onSelectedImage = event.target.dataset.source;
+
+  const onSelectedImage = e.target.dataset.source;
+
   const instance = basicLightbox.create(
     `<img src="${onSelectedImage}" width="800" height="600">`
   );
+
   instance.show();
+
   window.addEventListener("keydown", (e) => {
-  if (e.code === "Escape") {
+    if (e.code === "Escape") {
       instance.close();
+      console.log(e.code);
     };
   });
 }
