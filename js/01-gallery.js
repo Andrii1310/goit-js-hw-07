@@ -23,6 +23,7 @@ galleryContainer.insertAdjacentHTML('beforeend', createItem);
 // On and close modal window
 galleryContainer.addEventListener('click', onSelectImage);
 
+// 1) вариант:
 function onSelectImage (e){
   e.preventDefault();
 
@@ -31,35 +32,65 @@ function onSelectImage (e){
   }
 
   const onSelectedImage = e.target.dataset.source;
-
+  // Подключение библиотеки basicLightbox:
   const instance = basicLightbox.create(
     `<img src="${onSelectedImage}" width="800" height="600">`
   );
-
   instance.show();
+  console.log("Модальное окно открыто");
 
   window.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       instance.close();
+      window.removeEventListener('keydown', (e) => {
+        e.code === 'Escape';
+        console.log("Слушатель снят");
+      })
       console.log(e.code);
-    };
+    }
   });
 }
 
-console.log(galleryItems);
+// 2 вариант:
+// function onSelectImage (e) {
+//   e.preventDefault();
+//   if (e.target.nodeName !== 'IMG'){
+//     return;
+//   }
+//   const onSelectedImage = e.target.dataset.source;
+//   const onEscClick = e => {
+//     e.code === "keydown";
+//   }
+//   const instance = basicLightbox.create(
+//     `<img src="${onSelectedImage}" width="800" height="600">`,
+//     {
+//       onShow:  (instance) => {
+//         window.addEventListener('keydown', onEscClick);
+//         if (onEscClick) {
+//           instance.close();
+//         }
+//       },
+//     },
+//     {
+//       onClose: (instance) => {
+//         window.removeEventListener('keydown', onEscClick);
+//       },
+//     }
+//   )
+//   instance.show();
+// }
+// console.log(galleryItems);
 
-
-
+// План выполнения задачи:
 // 1. Создание и рендер разметки по массиву данных galleryItems
 //    и предоставленному шаблону элемента галереи.
 // 2. Реализация делегирования на div.gallery и получение url
 //    большого изображения.
 // 3. Подключение скрипта и стилей библиотеки модального окна
-//    basicLightbox. Используй CDN сервис jsdelivr и добавь в
+//    basicLightbox. Использовать CDN сервис jsdelivr и добавить в
 //    проект ссылки на минифицированные (.min) файлы библиотеки.
 // 4. Открытие модального окна по клику на элементе галереи.
-//    Для этого ознакомься с документацией и примерами.
+//    Для этого ознакомиться с документацией и примерами.
 // 5. Замена значения атрибута src элемента <img> в модальном окне
-//    перед открытием. Используй готовую разметку модального окна
+//    перед открытием. Использовать готовую разметку модального окна
 //    с изображением из примеров библиотеки basicLightbox.
-
