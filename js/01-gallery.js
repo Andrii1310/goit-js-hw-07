@@ -20,7 +20,7 @@ const createItem = galleryItems
 
 galleryContainer.insertAdjacentHTML('beforeend', createItem);
 
-// On and close modal window
+// On modal window
 galleryContainer.addEventListener('click', onSelectImage);
 
 // 1) вариант:
@@ -42,12 +42,14 @@ function onSelectImage (e){
   window.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       instance.close();
+      console.log(e.code);      
+    }
+    if (e.code === "Escape" && e.type === "keyup") {
       window.removeEventListener('keydown', (e) => {
-        e.code === 'Escape';
+        // e.type === 'keyup';
         console.log("Слушатель снят");
       })
-      console.log(e.code);
-    }
+    }    
   });
 }
 
