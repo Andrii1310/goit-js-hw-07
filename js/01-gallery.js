@@ -5,8 +5,9 @@ const galleryContainer = document.querySelector('.gallery');
 
 // Create gallery.
 const createItem = galleryItems
-  .map(el =>
-  `<div class="gallery__item">
+  .map(
+    (el) =>
+      `<div class="gallery__item">
      <a class="gallery__link" href="${el.original}">
      <img class="gallery__image"
           src="${el.preview}"
@@ -14,7 +15,7 @@ const createItem = galleryItems
           alt="${el.description}"
       />
       </a>
-    </div>`
+    </div>`,
   )
   .join('');
 
@@ -24,64 +25,38 @@ galleryContainer.insertAdjacentHTML('beforeend', createItem);
 galleryContainer.addEventListener('click', onSelectImage);
 
 // 1) вариант:
-function onSelectImage (e){
+function onSelectImage(e) {
   e.preventDefault();
 
-  if (e.target.nodeName !== 'IMG'){
-      return;
+  if (e.target.nodeName !== 'IMG') {
+    return;
   }
 
   const onSelectedImage = e.target.dataset.source;
   // Подключение библиотеки basicLightbox:
   const instance = basicLightbox.create(
-    `<img src="${onSelectedImage}" width="800" height="600">`
+    `<img src="${onSelectedImage}" width="800" height="600">`,
   );
   instance.show();
-  console.log("Модальное окно открыто");
+  console.log('Modal open, listener added');
 
-  window.addEventListener("keydown", (e) => {
-    if (e.code === "Escape") {
+  window.addEventListener('keydown', handleKeypress);
+
+  function handleKeypress(e) {
+    if (e.code === 'Escape') {
       instance.close();
-      console.log(e.code);      
+      console.log(e.code);
+      closeImgModal();
     }
-    if (e.code === "Escape" && e.type === "keyup") {
-      window.removeEventListener('keydown', (e) => {
-        // e.type === 'keyup';
-        console.log("Слушатель снят");
-      })
-    }    
-  });
+  }
+
+  function closeImgModal() {
+    window.removeEventListener('keydown', handleKeypress);
+    console.log('Listener removed');
+  }
 }
 
-// 2 вариант:
-// function onSelectImage (e) {
-//   e.preventDefault();
-//   if (e.target.nodeName !== 'IMG'){
-//     return;
-//   }
-//   const onSelectedImage = e.target.dataset.source;
-//   const onEscClick = e => {
-//     e.code === "keydown";
-//   }
-//   const instance = basicLightbox.create(
-//     `<img src="${onSelectedImage}" width="800" height="600">`,
-//     {
-//       onShow:  (instance) => {
-//         window.addEventListener('keydown', onEscClick);
-//         if (onEscClick) {
-//           instance.close();
-//         }
-//       },
-//     },
-//     {
-//       onClose: (instance) => {
-//         window.removeEventListener('keydown', onEscClick);
-//       },
-//     }
-//   )
-//   instance.show();
-// }
-// console.log(galleryItems);
+
 
 // План выполнения задачи:
 // 1. Создание и рендер разметки по массиву данных galleryItems
